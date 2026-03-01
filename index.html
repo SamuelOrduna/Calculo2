@@ -2,552 +2,1171 @@
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Notas Cálculo Diferencial e Integral II</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css"
+    />
+
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"
+    ></script>
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+    ></script>
 
     <style>
+      :root {
+        --bg: #f8f9fb;
+        --card: #ffffff;
+        --text: #111827;
+        --muted: #6b7280;
+        --border: #e5e7eb;
+        --shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+        --shadow-sm: 0 4px 14px rgba(0, 0, 0, 0.07);
+        --brand: #0066cc;
+        --brand-soft: #f1f6ff;
+        --radius: 14px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        color-scheme: light;
+      }
+
       body {
-        font-family: Arial, Helvetica, sans-serif;
-        background: #ffffff;
         margin: 0;
-        padding: 20px 200px;
+        background: var(--bg);
+        color: var(--text);
+        font-family:
+          ui-sans-serif,
+          system-ui,
+          -apple-system,
+          "Segoe UI",
+          Roboto,
+          Arial,
+          sans-serif;
+        line-height: 1.65;
+        padding: 40px 20px;
+        display: flex;
+        justify-content: center;
+      }
+
+      .container {
+        width: 100%;
+        max-width: 1000px;
+      }
+
+      header {
+        margin-bottom: 22px;
+      }
+
+      h1 {
+        font-size: clamp(26px, 4vw, 36px);
+        letter-spacing: -0.02em;
+        margin: 0 0 6px;
+      }
+
+      .subtitle {
+        margin: 0;
+        color: var(--muted);
+        font-size: 15px;
+      }
+
+      section {
+        margin-top: 34px;
       }
 
       h2 {
-        margin-top: 40px;
-        background: #f2f4f4;
-        color: black;
-        padding: 10px 15px;
-        border-radius: 6px;
+        margin: 0 0 12px;
+        font-size: 18px;
+        font-weight: 750;
+        background: #e9edf3;
+        padding: 12px 16px;
+        border-radius: 10px;
+      }
+
+      h3 {
+        margin: 18px 0 10px;
+        font-size: 16px;
+        color: #1f2937;
+      }
+
+      .card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        padding: 22px;
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+      }
+
+      .callout {
+        background: var(--brand-soft);
+        border: 1px solid rgba(0, 102, 204, 0.18);
+        border-left: 5px solid var(--brand);
+        padding: 14px 14px 14px 12px;
+        border-radius: 12px;
+        color: #0b1b33;
+        overflow-wrap: anywhere;
+      }
+
+      .callout p {
+        margin: 0;
+        white-space: pre-wrap;
       }
 
       details {
-        background: white;
-        margin: 15px 0;
-        border-radius: 6px;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-        padding: 10px;
+        background: var(--card);
+        border: 1px solid var(--border);
+        margin: 14px 0;
+        border-radius: 12px;
+        box-shadow: var(--shadow-sm);
+        overflow: clip;
+        transition:
+          transform 140ms ease,
+          box-shadow 140ms ease;
+      }
+
+      details:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 12px 28px rgba(0, 0, 0, 0.09);
       }
 
       summary {
-        font-size: 18px;
+        list-style: none;
         cursor: pointer;
-        padding: 10px;
-        font-weight: 600;
+        padding: 14px 16px;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        user-select: none;
+      }
+
+      /* Quitar marcador default */
+      summary::-webkit-details-marker {
+        display: none;
+      }
+
+      /* Caret */
+      .caret {
+        width: 10px;
+        height: 10px;
+        border-right: 2px solid var(--muted);
+        border-bottom: 2px solid var(--muted);
+        transform: rotate(45deg);
+        transition: transform 180ms ease;
+        flex: 0 0 auto;
+        margin-left: auto;
+      }
+
+      details[open] .caret {
+        transform: rotate(225deg);
+      }
+
+      .details-content {
+        border-top: 1px solid var(--border);
+        padding: 10px 16px 14px;
       }
 
       ul {
+        margin: 0;
+        padding: 0;
         list-style: none;
-        padding: 10px 20px;
       }
 
       li {
-        padding: 6px 0;
-        border-bottom: 1px solid #eee;
+        padding: 10px 0;
+        border-bottom: 1px solid #f1f5f9;
+      }
+
+      li:last-child {
+        border-bottom: none;
       }
 
       a {
+        color: var(--brand);
         text-decoration: none;
-        color: #0077cc;
-        font-size: 16px;
+        font-size: 15.5px;
       }
 
       a:hover {
         text-decoration: underline;
       }
+
+      a:focus-visible,
+      summary:focus-visible {
+        outline: 3px solid rgba(0, 102, 204, 0.25);
+        outline-offset: 3px;
+        border-radius: 10px;
+      }
+
+      .muted {
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        details,
+        .caret {
+          transition: none;
+        }
+      }
+
+      /* ===== Prompt Pro Shell ===== */
+      .prompt-shell {
+        background: transparent;
+        border: 0;
+        box-shadow: none;
+        margin: 14px 0 18px;
+      }
+
+      .prompt-summary {
+        background: linear-gradient(180deg, #ffffff 0%, #fbfcff 100%);
+        border: 1px solid rgba(17, 24, 39, 0.08);
+        border-radius: 16px;
+        padding: 14px 14px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        box-shadow: 0 14px 30px rgba(0, 0, 0, 0.08);
+      }
+
+      .prompt-shell[open] .prompt-summary {
+        border-bottom-left-radius: 10px;
+        border-bottom-right-radius: 10px;
+      }
+
+      .prompt-title {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        grid-template-rows: auto auto;
+        gap: 2px 10px;
+        align-items: center;
+      }
+
+      .prompt-badge {
+        grid-row: 1 / span 2;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        height: 28px;
+        padding: 0 10px;
+        border-radius: 999px;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+        font-size: 11px;
+        color: #0b1b33;
+        background: rgba(0, 102, 204, 0.1);
+        border: 1px solid rgba(0, 102, 204, 0.18);
+      }
+
+      .prompt-heading {
+        font-weight: 850;
+        letter-spacing: -0.02em;
+        font-size: 15px;
+        color: #111827;
+      }
+
+      .prompt-sub {
+        font-size: 12.5px;
+        color: #6b7280;
+      }
+
+      .prompt-actions {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .icon-btn {
+        width: 40px;
+        height: 40px;
+        border-radius: 12px;
+        border: 1px solid rgba(17, 24, 39, 0.1);
+        background: #fff;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.06);
+        transition:
+          transform 120ms ease,
+          box-shadow 120ms ease,
+          border-color 120ms ease;
+      }
+
+      .icon-btn svg {
+        width: 20px;
+        height: 20px;
+        fill: #111827;
+        opacity: 0.92;
+      }
+
+      .icon-btn:hover {
+        transform: translateY(-1px);
+        border-color: rgba(0, 102, 204, 0.25);
+        box-shadow: 0 14px 26px rgba(0, 0, 0, 0.09);
+      }
+
+      .icon-btn:active {
+        transform: translateY(1px);
+      }
+
+      .icon-btn:focus-visible {
+        outline: 3px solid rgba(0, 102, 204, 0.25);
+        outline-offset: 3px;
+      }
+
+      .prompt-caret {
+        width: 10px;
+        height: 10px;
+        border-right: 2px solid #6b7280;
+        border-bottom: 2px solid #6b7280;
+        transform: rotate(45deg);
+        transition: transform 180ms ease;
+        margin-right: 2px;
+      }
+
+      .prompt-shell[open] .prompt-caret {
+        transform: rotate(225deg);
+      }
+
+      .prompt-body {
+        margin-top: 10px;
+        background: #fff;
+        border: 1px solid rgba(17, 24, 39, 0.08);
+        border-radius: 16px;
+        padding: 16px;
+        box-shadow: 0 14px 30px rgba(0, 0, 0, 0.08);
+      }
+
+      .prompt-lead {
+        margin: 0 0 12px;
+        color: #6b7280;
+        font-size: 13px;
+      }
+
+      .prompt-block {
+        background: linear-gradient(180deg, #f6f9ff 0%, #f9fbff 100%);
+        border: 1px solid rgba(0, 102, 204, 0.16);
+        border-left: 6px solid #0066cc;
+        border-radius: 14px;
+        padding: 14px 14px 12px;
+      }
+
+      .prompt-block h3 {
+        margin: 0 0 10px;
+        font-size: 14px;
+        letter-spacing: -0.01em;
+      }
+
+      .prompt-block h4 {
+        margin: 12px 0 6px;
+        font-size: 13px;
+        color: #0b1b33;
+      }
+
+      .prompt-block p {
+        margin: 6px 0;
+        color: #111827;
+        font-size: 13.5px;
+      }
+
+      .prompt-block ul,
+      .prompt-block ol {
+        margin: 8px 0 6px;
+        padding-left: 18px;
+      }
+
+      .prompt-block li {
+        border-bottom: none;
+        padding: 4px 0;
+        color: #111827;
+        font-size: 13.5px;
+      }
+
+      .toast {
+        margin-top: 10px;
+        color: #6b7280;
+        font-size: 13px;
+        min-height: 1.2em;
+      }
+
+      /* Accessible hidden */
+      .sr-only {
+        position: absolute !important;
+        width: 1px !important;
+        height: 1px !important;
+        padding: 0 !important;
+        margin: -1px !important;
+        overflow: hidden !important;
+        clip: rect(0, 0, 0, 0) !important;
+        white-space: nowrap !important;
+        border: 0 !important;
+      }
+
+      /* KaTeX polish */
+      .katex-scope .katex {
+        font-size: 1.02em;
+      }
+      .katex-display {
+        margin: 0.8em 0;
+        padding: 0.2em 0;
+        overflow-x: auto;
+      }
     </style>
   </head>
+
   <body>
-    <h1>Cálculo Diferencial e Integral II</h1>
+    <script>
+      function toast(msg, el) {
+        if (!el) return;
+        el.textContent = msg;
+        clearTimeout(el._t);
+        el._t = setTimeout(() => (el.textContent = ""), 1400);
+      }
 
-    <!-- =========================== -->
-    <!--     PLANEACIÓN Y TEMARIO    -->
-    <!-- =========================== -->
-    <h2>Planeación y Temario</h2>
+      function fallbackCopyText(text) {
+        const ta = document.createElement("textarea");
+        ta.value = text;
+        ta.setAttribute("readonly", "");
+        ta.style.position = "fixed";
+        ta.style.top = "-9999px";
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand("copy");
+        document.body.removeChild(ta);
+      }
 
-    <div>
-      <h3>
-        Prompt: TUTOR MAESTRO DE CÁLCULO II (PROTOCOLOS DE ALTO RENDIMIENTO)
-      </h3>
-      <p>
-        PROTOCOLO DE TUTORÍA: CÁLCULO II (TEMARIO ESPECÍFICO)1. MISIÓN Y
-        CONTEXTOActúa como un Tutor de Élite en Cálculo Diferencial e Integral
-        II. Tu base de conocimientos para este chat se limita estrictamente al
-        siguiente temario:Integral Definida: Sumas de Riemann, Propiedades, TFC
-        (Parte 1 y 2), Sustitución y Logaritmo Natural.Funciones Inversas:
-        Exponencial natural, bases $a$, Trigonométricas e Hiperbólicas (directas
-        e inversas), e Indeterminaciones (L'Hôpital).Técnicas de Integración:
-        Partes, Sustitución Trigonométrica, Integrales Cuadráticas, Fracciones
-        Parciales e Integrales Impropias.Sucesiones y Series: Teorema y
-        Ejercicios de Taylor, y Sucesiones.2. REQUISITOS DE VERIFICACIÓN
-        (ZERO-TRUST)Fuentes Canónicas: Todo método debe referenciar libros
-        estándar (Stewart, Larson o Spivak).Sin Contenido Original: Usa ejemplos
-        que sean adaptaciones de problemas reales de libros de texto o
-        laboratorios tipo.Verificación Computacional: Cada resolución DEBE
-        incluir código Python (SymPy) para validar el resultado exacto y
-        Matplotlib para la interpretación gráfica (ej. áreas bajo la curva o
-        polinomios de Taylor).3. ESTRATEGIA DE ALTO RENDIMIENTO (MAESTRÍA)Para
-        cada tema del temario, la respuesta debe incluir:Señal de
-        Identificación: ¿Cómo distingo este problema en el examen? (Ej: "Si ves
-        $\sqrt{a^2 - x^2}$, usa Sustitución Trigonométrica").La Trampa del
-        Laboratorio: Análisis de los errores más comunes en los Laboratorios 1
-        al 14 del curso.Conexión de Temas: Cómo el tema actual (ej. Fracciones
-        Parciales) se apoya en los anteriores (ej. Logaritmo Natural).4. FORMATO
-        OBLIGATORIO DE RESPUESTAESTADO DE VERIFICACIÓN: [Referencia al
-        Libro/Sección]CONCEPTO E INTUICIÓN: Explicación técnica clara.ESTRATEGIA
-        DE ATAQUE:Paso 1: Identificación de la forma.Paso 2: Elección de
-        técnica.Paso 3: Desarrollo en LaTeX ($$\int_{a}^{b} f(x) dx$$).REVISIÓN
-        DE ERRORES: "Lo que NO debes hacer en el examen".LABORATORIO DE CÓDIGO:
-        Script de Python para verificar y graficar.LISTA DE VERIFICACIÓN FINAL:
-        (Fuentes, Cálculos, Gráfica).
-      </p>
-    </div>
+      document.addEventListener("click", async (e) => {
+        const btn = e.target.closest(".icon-btn[data-copy-target]");
+        if (!btn) return;
 
-    <details>
-      <summary>Planeación y Temario</summary>
-      <ul>
-        <li>
-          <a
-            href="planeacion-y-temario/Planeación Cálculo.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            >Planeación Cálculo.pdf</a
-          >
-        </li>
-      </ul>
-    </details>
+        const targetId = btn.getAttribute("data-copy-target");
+        const toastId = btn.getAttribute("data-toast-target");
+        const target = document.getElementById(targetId);
+        const toastEl = toastId ? document.getElementById(toastId) : null;
+        if (!target) return;
 
-    <!-- =========================== -->
-    <!--        MATERIAL EXTRA       -->
-    <!-- =========================== -->
-    <h2>Material Extra</h2>
+        const text = (target.value || target.innerText || "").trim();
 
-    <details>
-      <summary>Material Extra</summary>
-      <ul>
-        <li>
-          <a
-            href="material-extra/Ident. trigonométricas (2).pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            >Ident. trigonométricas.pdf</a
-          >
-        </li>
-        <li>
-          <a
-            href="material-extra/Tabla de derivadas e integrales básicas (1).pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            >Tabla de derivadas e integrales básicas.pdf</a
-          >
-        </li>
-        <li>
-          <a
-            href="material-extra/Hiperbólicas.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            >Hiperbólicas.pdf</a
-          >
-        </li>
-        <li>
-          <a
-            href="material-extra/Trigonométricas inversas.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            >Trigonométricas inversas.pdf</a
-          >
-        </li>
-      </ul>
-    </details>
+        try {
+          if (navigator.clipboard?.writeText)
+            await navigator.clipboard.writeText(text);
+          else fallbackCopyText(text);
 
-    <!-- =========================== -->
-    <!--      1. INTEGRAL DEFINIDA   -->
-    <!-- =========================== -->
-    <h2>1. Integral definida</h2>
+          toast("✅ Copiado al portapapeles", toastEl);
+          btn.setAttribute("aria-label", "Prompt copiado");
+          setTimeout(
+            () => btn.setAttribute("aria-label", "Copiar prompt"),
+            1400,
+          );
+        } catch {
+          toast("❌ No se pudo copiar", toastEl);
+        }
+      });
 
-    <details>
-      <summary>Integral definida</summary>
-      <ul>
-        <li>
-          <a
-            href="integral-definida/1-1- Sumas y notación sigma (1).pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            >1-1 Sumas y notación sigma</a
-          >
-        </li>
-        <li>
-          <a
-            href="integral-definida/1-2- Sumas de Riemann.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            >1-2 Sumas de Riemann</a
-          >
-        </li>
-        <li>
-          <a
-            href="integral-definida/1-3- Propiedades de las integrales.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            >1-3 Propiedades de las integrales</a
-          >
-        </li>
-        <li>
-          <a
-            href="integral-definida/1-4-1- TFC.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            >1-4-1 TFC</a
-          >
-        </li>
-        <li>
-          <a
-            href="integral-definida/1-4-2- TFC.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            >1-4-2 TFC</a
-          >
-        </li>
-        <li>
-          <a
-            href="integral-definida/1-5- Integral por sustitución (9).pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            >1-5 Integral por sustitución</a
-          >
-        </li>
-        <li>
-          <a
-            href="integral-definida/1-6- Logaritmo Natural (1).pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            >1-6 Logaritmo Natural</a
-          >
-        </li>
-      </ul>
-    </details>
+      // Auto-render KaTeX
+      window.addEventListener("DOMContentLoaded", () => {
+        if (!window.renderMathInElement) return;
+        document.querySelectorAll(".katex-scope").forEach((el) => {
+          window.renderMathInElement(el, {
+            delimiters: [
+              { left: "$$", right: "$$", display: true },
+              { left: "$", right: "$", display: false },
+              { left: "\\(", right: "\\)", display: false },
+              { left: "\\[", right: "\\]", display: true },
+            ],
+            throwOnError: false,
+          });
+        });
+      });
+    </script>
+    <main class="container">
+      <header>
+        <h1>Cálculo Diferencial e Integral II</h1>
+        <p class="subtitle">
+          Biblioteca de PDFs del curso + material extra y laboratorios.
+        </p>
+      </header>
 
-    <!-- =========================== -->
-    <!--      2. FUNCIONES INVERSAS  -->
-    <!-- =========================== -->
-    <h2>2. Funciones inversas</h2>
+      <!-- =========================== -->
+      <!--     PLANEACIÓN Y TEMARIO    -->
+      <!-- =========================== -->
 
-    <details>
-      <summary>Funciones inversas</summary>
-      <ul>
-        <li>
-          <a
-            href="funciones-inversas/2-1- Funciones inversas (4).pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            >2-1 Funciones inversas</a
-          >
-        </li>
-        <li>
-          <a
-            href="funciones-inversas/2-2- Exponencial natural (4).pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            >2-2 Exponencial natural</a
-          >
-        </li>
-        <li>
-          <a
-            href="funciones-inversas/2-3- Log y exp base a (1).pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            >2-3 Log y exp base a</a
-          >
-        </li>
-        <li>
-          <a
-            href="funciones-inversas/2-4- Inversas de trigonométricas (3).pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            >2-4 Inversas de trigonométricas</a
-          >
-        </li>
-        <li>
-          <a
-            href="funciones-inversas/2-5- Funciones hiperbólicas.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            >2-5 Funciones hiperbólicas</a
-          >
-        </li>
-        <li>
-          <a
-            href="funciones-inversas/2-6- Funciones hiperbólicas inversas.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            >2-6 Funciones hiperbólicas inversas</a
-          >
-        </li>
-        <li>
-          <a
-            href="funciones-inversas/2-7- Indeterminaciones.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            >2-7 Indeterminaciones</a
-          >
-        </li>
-      </ul>
-    </details>
+      <section aria-labelledby="planeacion">
+        <h2 id="planeacion">Planeación y Temario</h2>
 
-    <!-- =========================== -->
-    <!--     3. TÉCNICAS INTEGRACIÓN -->
-    <!-- =========================== -->
-    <h2>3. Técnicas de integración</h2>
+        <details class="prompt-shell" open>
+          <summary class="prompt-summary">
+            <div class="prompt-title">
+              <span class="prompt-badge">PROMPT</span>
+              <span class="prompt-heading">Tutor maestro de Cálculo II</span>
+              <span class="prompt-sub">Protocolos de alto rendimiento</span>
+            </div>
 
-    <details>
-      <summary>Técnicas de integración</summary>
-      <ul>
-        <li>
-          <a
-            href="tecnicas-de-integracion/3-1- Integración por partes.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            >Integración por partes</a
-          >
-        </li>
-        <li>
-          <a
-            href="tecnicas-de-integracion/3-1- Ejemplos de integracón por partes.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            >Ejemplos de integración por partes</a
-          >
-        </li>
-        <li>
-          <a
-            href="tecnicas-de-integracion/3-2- Sustitución trigonométrica (parte 1).pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            >Sustitución trigonométrica (1)</a
-          >
-        </li>
-        <li>
-          <a
-            href="tecnicas-de-integracion/3-2- Sustitución trigonométrica (parte 2).pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            >Sustitución trigonométrica (2)</a
-          >
-        </li>
-        <li>
-          <a
-            href="tecnicas-de-integracion/3-2- Sustitución trigonométrica (parte 3).pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            >Sustitución trigonométrica (3)</a
-          >
-        </li>
-        <li>
-          <a
-            href="tecnicas-de-integracion/3-3- Integrales trigonométricas.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            >Integrales trigonométricas</a
-          >
-        </li>
-        <li>
-          <a
-            href="tecnicas-de-integracion/Trigonométricas 2023-1.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            >Trigonométricas (extra)</a
-          >
-        </li>
-        <li>
-          <a
-            href="tecnicas-de-integracion/3.4. Integrales cuadráticas.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            >Integrales cuadráticas</a
-          >
-        </li>
-        <li>
-          <a
-            href="tecnicas-de-integracion/3.5. Fracciones parciales (parte I).pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            >Fracciones parciales (1)</a
-          >
-        </li>
-        <li>
-          <a
-            href="tecnicas-de-integracion/3.6. Fracciones parciales (parte 2).pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            >Fracciones parciales (2)</a
-          >
-        </li>
-        <li>
-          <a
-            href="tecnicas-de-integracion/3.7. Impropias (parte 1).pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            >Impropias (1)</a
-          >
-        </li>
-        <li>
-          <a
-            href="tecnicas-de-integracion/Impropias (Parte 2, criterios).pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            >Impropias (2)</a
-          >
-        </li>
-      </ul>
-    </details>
+            <div class="prompt-actions">
+              <button
+                type="button"
+                class="icon-btn"
+                data-copy-target="prompt-source"
+                data-toast-target="prompt-toast"
+                aria-label="Copiar prompt"
+                title="Copiar"
+              >
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path
+                    d="M16 1H6a2 2 0 0 0-2 2v10h2V3h10V1zm3 4H10a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h9a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 16H10V7h9v14z"
+                  />
+                </svg>
+              </button>
 
-    <!-- =========================== -->
-    <!--         LABORATORIOS        -->
-    <!-- =========================== -->
-    <h2>Laboratorios</h2>
+              <span class="prompt-caret" aria-hidden="true"></span>
+            </div>
+          </summary>
 
-    <details>
-      <summary>Laboratorios</summary>
-      <ul>
-        <li>
-          <a
-            href="laboratorios/Laborario 1, CDI-2.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            >Laboratorio 1</a
-          >
-        </li>
-        <li>
-          <a
-            href="laboratorios/Laboratorio 2, CDI-2.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            >Laboratorio 2</a
-          >
-        </li>
-        <li>
-          <a
-            href="laboratorios/Laboratorio 3, CDI-2.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            >Laboratorio 3</a
-          >
-        </li>
-        <li>
-          <a
-            href="laboratorios/Laboratorio 4, CDI-2.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            >Laboratorio 4</a
-          >
-        </li>
-        <li>
-          <a
-            href="laboratorios/Laboratorio 5, CDI-2.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            >Laboratorio 5</a
-          >
-        </li>
-        <li>
-          <a
-            href="laboratorios/Laboratorio 6-7, CDI-2.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            >Laboratorio 6-7</a
-          >
-        </li>
-        <li>
-          <a
-            href="laboratorios/Laboratorio 8, CDI-2.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            >Laboratorio 8</a
-          >
-        </li>
-        <li>
-          <a
-            href="laboratorios/Laboratorio 9, CDI-2.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            >Laboratorio 9</a
-          >
-        </li>
-        <li>
-          <a
-            href="laboratorios/Laboratorio 10. CDI-2.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            >Laboratorio 10</a
-          >
-        </li>
-        <li>
-          <a
-            href="laboratorios/Laboratorio 11, CDI-2.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            >Laboratorio 11</a
-          >
-        </li>
-        <li>
-          <a
-            href="laboratorios/Laboratorio 12, CDI-2.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            >Laboratorio 12</a
-          >
-        </li>
-        <li>
-          <a
-            href="laboratorios/Laboratorio 13, CDI-2.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            >Laboratorio 13</a
-          >
-        </li>
-        <li>
-          <a
-            href="laboratorios/Laboratorio 14, CDI-2.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            >Laboratorio 14</a
-          >
-        </li>
-      </ul>
-    </details>
+          <div class="prompt-body">
+            <!-- Fuente a copiar (NO se muestra). Aquí va el texto exacto. -->
+            <textarea id="prompt-source" class="sr-only" readonly>
+PROTOCOLO DE TUTORÍA: CÁLCULO II (TEMARIO ESPECÍFICO)
 
-    <!-- =========================== -->
-    <!--      5. SUCESIONES Y SERIES -->
-    <!-- =========================== -->
-    <h2>5. Sucesiones y series</h2>
+1. MISIÓN Y CONTEXTO
+Actúa como un Tutor de Élite en Cálculo Diferencial e Integral II. Tu base de conocimientos para este chat se limita estrictamente al siguiente temario:
+- Integral Definida: Sumas de Riemann, Propiedades, TFC (Parte 1 y 2), Sustitución y Logaritmo Natural.
+- Funciones Inversas: Exponencial natural, bases $a$, Trigonométricas e Hiperbólicas (directas e inversas), e Indeterminaciones (L'Hôpital).
+- Técnicas de Integración: Partes, Sustitución Trigonométrica, Integrales Cuadráticas, Fracciones Parciales e Integrales Impropias.
+- Sucesiones y Series: Teorema y Ejercicios de Taylor, y Sucesiones.
 
-    <details>
-      <summary>Sucesiones y series</summary>
-      <ul>
-        <li>
-          <a
-            href="sucesiones-y-series/5-1- Teo Taylor-1.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            >5-1 Teorema de Taylor</a
+2. REQUISITOS DE VERIFICACIÓN (ZERO-TRUST)
+- Fuentes Canónicas: Todo método debe referenciar libros estándar (Stewart, Larson o Spivak).
+- Sin Contenido Original: Usa ejemplos que sean adaptaciones de problemas reales de libros de texto o laboratorios tipo.
+- Verificación Computacional: Cada resolución DEBE incluir código Python (SymPy) para validar el resultado exacto y Matplotlib para la interpretación gráfica (ej. áreas bajo la curva o polinomios de Taylor).
+
+3. ESTRATEGIA DE ALTO RENDIMIENTO (MAESTRÍA)
+Para cada tema del temario, la respuesta debe incluir:
+- Señal de Identificación: ¿Cómo distingo este problema en el examen? (Ej: "Si ves $\sqrt{a^2 - x^2}$, usa Sustitución Trigonométrica").
+- La Trampa del Laboratorio: Análisis de los errores más comunes en los Laboratorios 1 al 14 del curso.
+- Conexión de Temas: Cómo el tema actual (ej. Fracciones Parciales) se apoya en los anteriores (ej. Logaritmo Natural).
+
+4. FORMATO OBLIGATORIO DE RESPUESTA
+ESTADO DE VERIFICACIÓN: [Referencia al Libro/Sección]
+CONCEPTO E INTUICIÓN: Explicación técnica clara.
+ESTRATEGIA DE ATAQUE:
+Paso 1: Identificación de la forma.
+Paso 2: Elección de técnica.
+Paso 3: Desarrollo en LaTeX (ejemplo: $$\int_{a}^{b} f(x)\,dx$$).
+REVISIÓN DE ERRORES: "Lo que NO debes hacer en el examen".
+LABORATORIO DE CÓDIGO: Script de Python para verificar y graficar.
+LISTA DE VERIFICACIÓN FINAL: (Fuentes, Cálculos, Gráfica).
+      </textarea
+            >
+
+            <!-- Lo que se muestra (bonito) + KaTeX render -->
+            <article class="prompt-render katex-scope" id="prompt-render">
+              <p class="prompt-lead">
+                Copia y pega este prompt tal cual. Las fórmulas se renderizan
+                con LaTeX.
+              </p>
+
+              <div class="prompt-block">
+                <h3>PROTOCOLO DE TUTORÍA: CÁLCULO II (TEMARIO ESPECÍFICO)</h3>
+
+                <h4>1. MISIÓN Y CONTEXTO</h4>
+                <p>
+                  Actúa como un Tutor de Élite en Cálculo Diferencial e Integral
+                  II. Tu base de conocimientos para este chat se limita
+                  estrictamente al siguiente temario:
+                </p>
+                <ul>
+                  <li>
+                    Integral Definida: Sumas de Riemann, Propiedades, TFC (Parte
+                    1 y 2), Sustitución y Logaritmo Natural.
+                  </li>
+                  <li>
+                    Funciones Inversas: Exponencial natural, bases $a$,
+                    Trigonométricas e Hiperbólicas (directas e inversas), e
+                    Indeterminaciones (L'Hôpital).
+                  </li>
+                  <li>
+                    Técnicas de Integración: Partes, Sustitución Trigonométrica,
+                    Integrales Cuadráticas, Fracciones Parciales e Integrales
+                    Impropias.
+                  </li>
+                  <li>
+                    Sucesiones y Series: Teorema y Ejercicios de Taylor, y
+                    Sucesiones.
+                  </li>
+                </ul>
+
+                <h4>2. REQUISITOS DE VERIFICACIÓN (ZERO-TRUST)</h4>
+                <ul>
+                  <li>
+                    <b>Fuentes Canónicas:</b> Todo método debe referenciar
+                    libros estándar (Stewart, Larson o Spivak).
+                  </li>
+                  <li>
+                    <b>Sin Contenido Original:</b> Usa ejemplos que sean
+                    adaptaciones de problemas reales de libros de texto o
+                    laboratorios tipo.
+                  </li>
+                  <li>
+                    <b>Verificación Computacional:</b> Cada resolución DEBE
+                    incluir código Python (SymPy) y Matplotlib.
+                  </li>
+                </ul>
+
+                <h4>3. ESTRATEGIA DE ALTO RENDIMIENTO (MAESTRÍA)</h4>
+                <ul>
+                  <li>
+                    <b>Señal de Identificación:</b> Ej: si ves $\sqrt{a^2 -
+                    x^2}$, usa sustitución trigonométrica.
+                  </li>
+                  <li>
+                    <b>Trampa del Laboratorio:</b> Errores más comunes de Labs
+                    1–14.
+                  </li>
+                  <li>
+                    <b>Conexión de Temas:</b> Cómo el tema actual se apoya en
+                    los anteriores.
+                  </li>
+                </ul>
+
+                <h4>4. FORMATO OBLIGATORIO DE RESPUESTA</h4>
+                <p>
+                  <b>ESTADO DE VERIFICACIÓN:</b> [Referencia al Libro/Sección]
+                </p>
+                <p><b>CONCEPTO E INTUICIÓN:</b> Explicación técnica clara.</p>
+                <p><b>ESTRATEGIA DE ATAQUE:</b></p>
+                <ol>
+                  <li>Identificación de la forma</li>
+                  <li>Elección de técnica</li>
+                  <li>
+                    Desarrollo en LaTeX, por ejemplo: $$\int_{a}^{b} f(x)\,dx$$
+                  </li>
+                </ol>
+                <p>
+                  <b>REVISIÓN DE ERRORES:</b> “Lo que NO debes hacer en el
+                  examen”.
+                </p>
+                <p>
+                  <b>LABORATORIO DE CÓDIGO:</b> Script de Python para verificar
+                  y graficar.
+                </p>
+                <p>
+                  <b>LISTA DE VERIFICACIÓN FINAL:</b> Fuentes, Cálculos,
+                  Gráfica.
+                </p>
+              </div>
+            </article>
+
+            <div
+              class="toast"
+              id="prompt-toast"
+              role="status"
+              aria-live="polite"
+            ></div>
+          </div>
+        </details>
+
+        <!-- (tu details de PDFs puede ir aquí abajo tal cual) -->
+      </section>
+
+      <!-- =========================== -->
+      <!--        MATERIAL EXTRA       -->
+      <!-- =========================== -->
+      <section aria-labelledby="extra">
+        <h2 id="extra">Material Extra</h2>
+
+        <details>
+          <summary>
+            Material Extra
+            <span class="caret" aria-hidden="true"></span>
+          </summary>
+          <nav class="details-content" aria-label="Archivos de material extra">
+            <ul>
+              <li>
+                <a
+                  href="material-extra/Ident. trigonométricas (2).pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >Ident. trigonométricas.pdf</a
+                >
+              </li>
+              <li>
+                <a
+                  href="material-extra/Tabla de derivadas e integrales básicas (1).pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >Tabla de derivadas e integrales básicas.pdf</a
+                >
+              </li>
+              <li>
+                <a
+                  href="material-extra/Hiperbólicas.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >Hiperbólicas.pdf</a
+                >
+              </li>
+              <li>
+                <a
+                  href="material-extra/Trigonométricas inversas.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >Trigonométricas inversas.pdf</a
+                >
+              </li>
+            </ul>
+          </nav>
+        </details>
+      </section>
+
+      <!-- =========================== -->
+      <!--      1. INTEGRAL DEFINIDA   -->
+      <!-- =========================== -->
+      <section aria-labelledby="int-def">
+        <h2 id="int-def">1. Integral definida</h2>
+
+        <details>
+          <summary>
+            Integral definida
+            <span class="caret" aria-hidden="true"></span>
+          </summary>
+          <nav
+            class="details-content"
+            aria-label="Archivos de integral definida"
           >
-        </li>
-        <li>
-          <a
-            href="sucesiones-y-series/5-1-1- Ejercicios de Taylor (1).pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            >5-1-1 Ejercicios de Taylor</a
+            <ul>
+              <li>
+                <a
+                  href="integral-definida/1-1- Sumas y notación sigma (1).pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >1-1 Sumas y notación sigma</a
+                >
+              </li>
+              <li>
+                <a
+                  href="integral-definida/1-2- Sumas de Riemann.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >1-2 Sumas de Riemann</a
+                >
+              </li>
+              <li>
+                <a
+                  href="integral-definida/1-3- Propiedades de las integrales.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >1-3 Propiedades de las integrales</a
+                >
+              </li>
+              <li>
+                <a
+                  href="integral-definida/1-4-1- TFC.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >1-4-1 TFC</a
+                >
+              </li>
+              <li>
+                <a
+                  href="integral-definida/1-4-2- TFC.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >1-4-2 TFC</a
+                >
+              </li>
+              <li>
+                <a
+                  href="integral-definida/1-5- Integral por sustitución (9).pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >1-5 Integral por sustitución</a
+                >
+              </li>
+              <li>
+                <a
+                  href="integral-definida/1-6- Logaritmo Natural (1).pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >1-6 Logaritmo Natural</a
+                >
+              </li>
+            </ul>
+          </nav>
+        </details>
+      </section>
+
+      <!-- =========================== -->
+      <!--      2. FUNCIONES INVERSAS  -->
+      <!-- =========================== -->
+      <section aria-labelledby="inv">
+        <h2 id="inv">2. Funciones inversas</h2>
+
+        <details>
+          <summary>
+            Funciones inversas
+            <span class="caret" aria-hidden="true"></span>
+          </summary>
+          <nav
+            class="details-content"
+            aria-label="Archivos de funciones inversas"
           >
-        </li>
-        <li>
-          <a
-            href="sucesiones-y-series/5-2- Sucesiones.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            >5-2 Sucesiones</a
+            <ul>
+              <li>
+                <a
+                  href="funciones-inversas/2-1- Funciones inversas (4).pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >2-1 Funciones inversas</a
+                >
+              </li>
+              <li>
+                <a
+                  href="funciones-inversas/2-2- Exponencial natural (4).pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >2-2 Exponencial natural</a
+                >
+              </li>
+              <li>
+                <a
+                  href="funciones-inversas/2-3- Log y exp base a (1).pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >2-3 Log y exp base a</a
+                >
+              </li>
+              <li>
+                <a
+                  href="funciones-inversas/2-4- Inversas de trigonométricas (3).pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >2-4 Inversas de trigonométricas</a
+                >
+              </li>
+              <li>
+                <a
+                  href="funciones-inversas/2-5- Funciones hiperbólicas.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >2-5 Funciones hiperbólicas</a
+                >
+              </li>
+              <li>
+                <a
+                  href="funciones-inversas/2-6- Funciones hiperbólicas inversas.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >2-6 Funciones hiperbólicas inversas</a
+                >
+              </li>
+              <li>
+                <a
+                  href="funciones-inversas/2-7- Indeterminaciones.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >2-7 Indeterminaciones</a
+                >
+              </li>
+            </ul>
+          </nav>
+        </details>
+      </section>
+
+      <!-- =========================== -->
+      <!--     3. TÉCNICAS INTEGRACIÓN -->
+      <!-- =========================== -->
+      <section aria-labelledby="tec">
+        <h2 id="tec">3. Técnicas de integración</h2>
+
+        <details>
+          <summary>
+            Técnicas de integración
+            <span class="caret" aria-hidden="true"></span>
+          </summary>
+          <nav
+            class="details-content"
+            aria-label="Archivos de técnicas de integración"
           >
-        </li>
-      </ul>
-    </details>
+            <ul>
+              <li>
+                <a
+                  href="tecnicas-de-integracion/3-1- Integración por partes.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >Integración por partes</a
+                >
+              </li>
+              <li>
+                <a
+                  href="tecnicas-de-integracion/3-1- Ejemplos de integracón por partes.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >Ejemplos de integración por partes</a
+                >
+              </li>
+              <li>
+                <a
+                  href="tecnicas-de-integracion/3-2- Sustitución trigonométrica (parte 1).pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >Sustitución trigonométrica (1)</a
+                >
+              </li>
+              <li>
+                <a
+                  href="tecnicas-de-integracion/3-2- Sustitución trigonométrica (parte 2).pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >Sustitución trigonométrica (2)</a
+                >
+              </li>
+              <li>
+                <a
+                  href="tecnicas-de-integracion/3-2- Sustitución trigonométrica (parte 3).pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >Sustitución trigonométrica (3)</a
+                >
+              </li>
+              <li>
+                <a
+                  href="tecnicas-de-integracion/3-3- Integrales trigonométricas.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >Integrales trigonométricas</a
+                >
+              </li>
+              <li>
+                <a
+                  href="tecnicas-de-integracion/Trigonométricas 2023-1.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >Trigonométricas (extra)</a
+                >
+              </li>
+              <li>
+                <a
+                  href="tecnicas-de-integracion/3.4. Integrales cuadráticas.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >Integrales cuadráticas</a
+                >
+              </li>
+              <li>
+                <a
+                  href="tecnicas-de-integracion/3.5. Fracciones parciales (parte I).pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >Fracciones parciales (1)</a
+                >
+              </li>
+              <li>
+                <a
+                  href="tecnicas-de-integracion/3.6. Fracciones parciales (parte 2).pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >Fracciones parciales (2)</a
+                >
+              </li>
+              <li>
+                <a
+                  href="tecnicas-de-integracion/3.7. Impropias (parte 1).pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >Impropias (1)</a
+                >
+              </li>
+              <li>
+                <a
+                  href="tecnicas-de-integracion/Impropias (Parte 2, criterios).pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >Impropias (2)</a
+                >
+              </li>
+            </ul>
+          </nav>
+        </details>
+      </section>
+
+      <!-- =========================== -->
+      <!--         LABORATORIOS        -->
+      <!-- =========================== -->
+      <section aria-labelledby="labs">
+        <h2 id="labs">Laboratorios</h2>
+
+        <details>
+          <summary>
+            Laboratorios
+            <span class="caret" aria-hidden="true"></span>
+          </summary>
+          <nav class="details-content" aria-label="Archivos de laboratorios">
+            <ul>
+              <li>
+                <a
+                  href="laboratorios/Laborario 1, CDI-2.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >Laboratorio 1</a
+                >
+              </li>
+              <li>
+                <a
+                  href="laboratorios/Laboratorio 2, CDI-2.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >Laboratorio 2</a
+                >
+              </li>
+              <li>
+                <a
+                  href="laboratorios/Laboratorio 3, CDI-2.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >Laboratorio 3</a
+                >
+              </li>
+              <li>
+                <a
+                  href="laboratorios/Laboratorio 4, CDI-2.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >Laboratorio 4</a
+                >
+              </li>
+              <li>
+                <a
+                  href="laboratorios/Laboratorio 5, CDI-2.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >Laboratorio 5</a
+                >
+              </li>
+              <li>
+                <a
+                  href="laboratorios/Laboratorio 6-7, CDI-2.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >Laboratorio 6-7</a
+                >
+              </li>
+              <li>
+                <a
+                  href="laboratorios/Laboratorio 8, CDI-2.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >Laboratorio 8</a
+                >
+              </li>
+              <li>
+                <a
+                  href="laboratorios/Laboratorio 9, CDI-2.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >Laboratorio 9</a
+                >
+              </li>
+              <li>
+                <a
+                  href="laboratorios/Laboratorio 10. CDI-2.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >Laboratorio 10</a
+                >
+              </li>
+              <li>
+                <a
+                  href="laboratorios/Laboratorio 11, CDI-2.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >Laboratorio 11</a
+                >
+              </li>
+              <li>
+                <a
+                  href="laboratorios/Laboratorio 12, CDI-2.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >Laboratorio 12</a
+                >
+              </li>
+              <li>
+                <a
+                  href="laboratorios/Laboratorio 13, CDI-2.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >Laboratorio 13</a
+                >
+              </li>
+              <li>
+                <a
+                  href="laboratorios/Laboratorio 14, CDI-2.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >Laboratorio 14</a
+                >
+              </li>
+            </ul>
+          </nav>
+        </details>
+      </section>
+
+      <!-- =========================== -->
+      <!--      5. SUCESIONES Y SERIES -->
+      <!-- =========================== -->
+      <section aria-labelledby="series">
+        <h2 id="series">5. Sucesiones y series</h2>
+
+        <details>
+          <summary>
+            Sucesiones y series
+            <span class="caret" aria-hidden="true"></span>
+          </summary>
+          <nav
+            class="details-content"
+            aria-label="Archivos de sucesiones y series"
+          >
+            <ul>
+              <li>
+                <a
+                  href="sucesiones-y-series/5-1- Teo Taylor-1.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >5-1 Teorema de Taylor</a
+                >
+              </li>
+              <li>
+                <a
+                  href="sucesiones-y-series/5-1-1- Ejercicios de Taylor (1).pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >5-1-1 Ejercicios de Taylor</a
+                >
+              </li>
+              <li>
+                <a
+                  href="sucesiones-y-series/5-2- Sucesiones.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >5-2 Sucesiones</a
+                >
+              </li>
+            </ul>
+          </nav>
+        </details>
+      </section>
+    </main>
   </body>
 </html>
